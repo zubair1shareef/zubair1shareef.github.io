@@ -20,6 +20,7 @@
       align-items: center;
       height: 100vh;
       overflow: hidden;
+      transition: all 0.3s ease;
     }
 
     .terminal {
@@ -34,12 +35,14 @@
       white-space: pre-wrap;
       display: flex;
       flex-direction: column;
+      transition: all 0.3s ease;
     }
 
     .terminal-header {
       display: flex;
       align-items: center;
       margin-bottom: 10px;
+      cursor: pointer;
     }
 
     .terminal-header div {
@@ -64,6 +67,7 @@
     #output {
       flex: 1;
       overflow-y: auto;
+      transition: height 0.3s ease;
     }
 
     .prompt {
@@ -85,14 +89,34 @@
       display: flex;
       align-items: center;
     }
+
+    /* New Styles */
+    .terminal.minimized {
+      height: 40px;
+      padding: 5px;
+    }
+
+    .terminal.maximized {
+      width: 100%;
+      height: 100%;
+    }
+
+    .terminal-header .btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
   <div class="terminal" id="terminal">
-    <div class="terminal-header">
-      <div class="red"></div>
-      <div class="yellow"></div>
-      <div class="green"></div>
+    <div class="terminal-header" id="header">
+      <div class="red btn" id="close"></div>
+      <div class="yellow btn" id="minimize"></div>
+      <div class="green btn" id="maximize"></div>
     </div>
     <div id="output">
       <div>Welcome to my interactive terminal! Type a command to begin.</div>
@@ -102,6 +126,9 @@
   <script>
     const terminal = document.getElementById('terminal');
     const output = document.getElementById('output');
+    const minimizeButton = document.getElementById('minimize');
+    const maximizeButton = document.getElementById('maximize');
+    const closeButton = document.getElementById('close');
 
     const commands = {
       about: `Zubair Shareef
@@ -109,64 +136,45 @@ Full Stack Developer
 Software Engineer with 2+ years of experience in Full Stack Development, specializing in MEAN and MERN Stack.
 zubairshareef@outlook.com | Hyderabad
 github.com/zubair1shareef`,
-
       experience: `WORK EXPERIENCE
 Full Stack Developer (MTS-4) - GroundhogApps Pvt Ltd (08/2022 - Present, Hyderabad)
-
-
 Full Stack Developer Intern - Sharpener Tech (09/2021 - 03/2022, Bangalore - Remote)
-
-
 Associate Intern - AIESEC (08/2020 - 01/2021, Remote)
-
-
-Android Development Intern - Sankalpsoft Solutions (05/2020 - 07/2020, Remote)
-`,
-
+Android Development Intern - Sankalpsoft Solutions (05/2020 - 07/2020, Remote)`,
       skills: `SKILLS
 - Frontend: Angular, ReactJS, NextJS, HTML, CSS, JavaScript
 - Backend: NodeJS, ExpressJS, Firebase, GraphQL
 - Databases: MongoDB, CouchbaseDB, Redis, SQL
 - Tools: Docker, Git, RabbitMQ, OpenLayers, AWS, Azure
 - Programming: C, C++, Java, Core Java`,
-
       projects: `PROJECTS
 1. Social Media Web App
 - Frontend: ReactJS | Backend: NodeJS, MongoDB, RabbitMQ
 - Features: JWT login, posts, stories, likes, feed.
-
 2. Expense Tracker
 - Backend: NodeJS, SQL, AWS | Features: Modern UI, JWT login, expense tracking, premium features (dark mode, user ranking).
-
 3. Online Web IDE
-- Frontend: HTML, CSS, JS,React | Backend: NodeJS,socket..
+- Frontend: HTML, CSS, JS, React | Backend: NodeJS, socket..
 - Features: support all Js frameworks.
-
 4. Shopify-like E-commerce Platform
 - Backend: NodeJS, SQL | Features: Add-to-cart, admin login.
-
 5. Notes Web App
 - Frontend: React | Backend: NodeJS, MongoDB
 - Features: Create, update, delete notes with modern UI.
-
 6. MultiPlayer Chess
 - Frontend: React | Backend: NodeJS,Socket,Chess.js
 - Features: MultiPlayer Chess`,
-
       education: `EDUCATION
 B.Tech in Computer Science Engineering
 Jawaharlal Nehru Technological University Hyderabad (2018 - 2022)`,
-
       volunteer: `VOLUNTEER EXPERIENCE
 - Younify Radio: Led cultural and youth development workshops.
 - AIESEC: Supported international exchange programs.`,
-
       contact: `CONTACT
 Email: zubairshareef@outlook.com
 Phone: ************
 Location: Hyderabad
 GitHub: github.com/zubair1shareef`,
-
       help: `Available commands:
 - about: Display basic information.
 - experience: Show work experience.
@@ -176,7 +184,6 @@ GitHub: github.com/zubair1shareef`,
 - volunteer: Display volunteer experience.
 - contact: Display contact details.
 - clear: Clear the terminal.`,
-
       clear: 'clear'
     };
 
@@ -229,6 +236,19 @@ GitHub: github.com/zubair1shareef`,
 
     // Initialize the first input line
     createInputLine();
+
+    // Button functionalities
+    minimizeButton.addEventListener('click', () => {
+      terminal.classList.toggle('minimized');
+    });
+
+    maximizeButton.addEventListener('click', () => {
+      terminal.classList.toggle('maximized');
+    });
+
+    closeButton.addEventListener('click', () => {
+      terminal.style.display = 'none';
+    });
   </script>
 </body>
 </html>
