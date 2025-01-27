@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Terminal Profile</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    body {
+      background-color: #1e1e1e;
+      color: #00ff00;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .terminal {
+      background: #000;
+      width: 90%;
+      max-width: 800px;
+      height: 80%;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .terminal-header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .terminal-header div {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .terminal-header .red {
+      background-color: #ff5f56;
+    }
+
+    .terminal-header .yellow {
+      background-color: #ffbd2e;
+    }
+
+    .terminal-header .green {
+      background-color: #27c93f;
+    }
+
+    .terminal-content {
+      flex: 1;
+      overflow-y: auto;
+      white-space: pre-line;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .command {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .command .prompt {
+      color: #00d8ff;
+      margin-right: 5px;
+    }
+
+    .user-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #00ff00;
+      font-family: inherit;
+      font-size: inherit;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="red"></div>
+      <div class="yellow"></div>
+      <div class="green"></div>
+    </div>
+    <div class="terminal-content" id="output">
+      <div>Welcome to my interactive terminal! Type a command to begin.</div>
+    </div>
+    <div class="command">
+      <span class="prompt">$</span>
+      <input class="user-input" type="text" id="terminal-input" autocomplete="off" autofocus placeholder="Type a command...">
+    </div>
+  </div>
+
+  <script>
+    const output = document.getElementById('output');
+    const input = document.getElementById('terminal-input');
+
+    const commands = {
+      about: "Name: Zubair shareef\nRole: Full Stack Developer\nExperience: 2+ Years\nInterests: Microservices, OpenLayers, Research",
+      projects: "1. GPS Playback using OpenLayers\n2. Microservices Optimization for Journal Writing\n3. Portfolio Website",
+      experience: "Company: Big4, Hyderabad\nRole: Full Stack Developer\nDuration: 2+ Years\nSkills: React, Node.js, OpenLayers, Microservices",
+      skills: "Languages: JavaScript, Python, HTML, CSS\nFrameworks: React, Node.js\nTools: Docker, Git, OpenLayers",
+      help: "Available commands:\nabout - Display information about me\nprojects - List my projects\nexperience - Show my work experience\nskills - List my skills\nclear - Clear the terminal",
+      clear: "clear"
+    };
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const userInput = input.value.trim();
+        input.value = '';
+
+        if (userInput === 'clear') {
+          output.innerHTML = '';
+          return;
+        }
+
+        const response = commands[userInput] || `Command not found: ${userInput}. Type 'help' for a list of commands.`;
+        const userCommand = `<div><span class="prompt">$</span> ${userInput}</div>`;
+        const commandResponse = `<div>${response}</div>`;
+
+        output.innerHTML += userCommand;
+        if (response !== "clear") {
+          output.innerHTML += commandResponse;
+        }
+
+        output.scrollTop = output.scrollHeight;
+      }
+    });
+  </script>
+</body>
+</html>
