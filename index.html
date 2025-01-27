@@ -19,13 +19,14 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      width: 100%;
       overflow: hidden;
       transition: all 0.3s ease;
     }
 
     .terminal {
       background: #111;
-      width: 90%;
+      width: 70%;
       max-width: 800px;
       height: 80%;
       padding: 20px;
@@ -104,6 +105,7 @@
     .terminal.maximized {
       width: 100%;
       height: 100%;
+      max-width: none;
     }
 
     .terminal-header .btn {
@@ -136,6 +138,47 @@
       width: 30px;
       height: 30px;
     }
+
+    /* Clean layout for terminal content */
+    .content-section {
+      margin: 10px 0;
+    }
+
+    .content-section h3 {
+      margin-bottom: 8px;
+    }
+
+    .content-section p {
+      margin: 5px 0;
+    }
+
+    .content-section ul {
+      margin: 10px 0 10px 20px;
+    }
+
+    /* Table-like lines */
+    .table-format {
+      white-space: pre-wrap;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    .table-format .row {
+      display: flex;
+    }
+
+    .table-format .row > div {
+      flex: 1;
+      border-right: 1px solid #00ff00;
+      padding: 5px;
+    }
+
+    .table-format .row > div:last-child {
+      border-right: none;
+    }
+
+    .table-format .header {
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -153,7 +196,7 @@
   <!-- Floating Reopen Icon -->
   <div id="reopen-icon">
     <!-- Use your custom icon URL here -->
-    <img src="https://cdn-icons-png.flaticon.com/512/7560/7560719.png" alt="Reopen Icon">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Plus_sign_font_awesome.svg/1200px-Plus_sign_font_awesome.svg.png" alt="Reopen Icon">
   </div>
 
   <script>
@@ -165,50 +208,78 @@
     const reopenIcon = document.getElementById('reopen-icon');
 
     const commands = {
-      about: `Zubair Shareef
-Full Stack Developer
-Software Engineer with 2+ years of experience in Full Stack Development, specializing in MEAN and MERN Stack.
-zubairshareef@outlook.com | Hyderabad
-github.com/zubair1shareef`,
-      experience: `WORK EXPERIENCE
-Full Stack Developer (MTS-4) - GroundhogApps Pvt Ltd (08/2022 - Present, Hyderabad)
-Full Stack Developer Intern - Sharpener Tech (09/2021 - 03/2022, Bangalore - Remote)
-Associate Intern - AIESEC (08/2020 - 01/2021, Remote)
-Android Development Intern - Sankalpsoft Solutions (05/2020 - 07/2020, Remote)`,
-      skills: `SKILLS
-- Frontend: Angular, ReactJS, NextJS, HTML, CSS, JavaScript
-- Backend: NodeJS, ExpressJS, Firebase, GraphQL
-- Databases: MongoDB, CouchbaseDB, Redis, SQL
-- Tools: Docker, Git, RabbitMQ, OpenLayers, AWS, Azure
-- Programming: C, C++, Java, Core Java`,
-      projects: `PROJECTS
-1. Social Media Web App
-- Frontend: ReactJS | Backend: NodeJS, MongoDB, RabbitMQ
-- Features: JWT login, posts, stories, likes, feed.
-2. Expense Tracker
-- Backend: NodeJS, SQL, AWS | Features: Modern UI, JWT login, expense tracking, premium features (dark mode, user ranking).
-3. Online Web IDE
-- Frontend: HTML, CSS, JS, React | Backend: NodeJS, socket..
-- Features: support all Js frameworks.
-4. Shopify-like E-commerce Platform
-- Backend: NodeJS, SQL | Features: Add-to-cart, admin login.
-5. Notes Web App
-- Frontend: React | Backend: NodeJS, MongoDB
-- Features: Create, update, delete notes with modern UI.
-6. MultiPlayer Chess
-- Frontend: React | Backend: NodeJS,Socket,Chess.js
-- Features: MultiPlayer Chess`,
-      education: `EDUCATION
-B.Tech in Computer Science Engineering
-Jawaharlal Nehru Technological University Hyderabad (2018 - 2022)`,
-      volunteer: `VOLUNTEER EXPERIENCE
-- Younify Radio: Led cultural and youth development workshops.
-- AIESEC: Supported international exchange programs.`,
-      contact: `CONTACT
-Email: zubairshareef@outlook.com
-Phone: ************
-Location: Hyderabad
-GitHub: github.com/zubair1shareef`,
+      about: `
+        +------------------+---------------------------------+
+        | Name             | Zubair Shareef                  |
+        +------------------+---------------------------------+
+        | Role             | Full Stack Developer           |
+        +------------------+---------------------------------+
+        | Email            | zubairshareef@outlook.com       |
+        +------------------+---------------------------------+
+        | Location         | Hyderabad                       |
+        +------------------+---------------------------------+
+        | GitHub           | github.com/zubair1shareef       |
+        +------------------+---------------------------------+`,
+
+      experience: `
+        +----------------------+---------------------------------------+
+        | Job Title           | Full Stack Developer (MTS-4)         |
+        +----------------------+---------------------------------------+
+        | Company             | GroundhogApps Pvt Ltd               |
+        +----------------------+---------------------------------------+
+        | Duration            | 08/2022 - Present                   |
+        +----------------------+---------------------------------------+
+        | Location            | Hyderabad                           |
+        +----------------------+---------------------------------------+`,
+
+      skills: `
+        +--------------------+-------------------------------------------+
+        | Frontend           | Angular, ReactJS, NextJS, HTML, CSS, JS   |
+        +--------------------+-------------------------------------------+
+        | Backend            | NodeJS, ExpressJS, Firebase, GraphQL     |
+        +--------------------+-------------------------------------------+
+        | Databases          | MongoDB, CouchbaseDB, Redis, SQL         |
+        +--------------------+-------------------------------------------+
+        | Tools              | Docker, Git, RabbitMQ, OpenLayers, AWS   |
+        +--------------------+-------------------------------------------+
+        | Programming        | C, C++, Java, Core Java                 |
+        +--------------------+-------------------------------------------+`,
+
+      projects: `
+        +-----------------------------------------+-----------------------+
+        | Project Name                           | Technologies          |
+        +-----------------------------------------+-----------------------+
+        | Social Media Web App                   | ReactJS, NodeJS, MongoDB |
+        +-----------------------------------------+-----------------------+
+        | Expense Tracker                         | NodeJS, SQL, AWS         |
+        +-----------------------------------------+-----------------------+
+        | Online Web IDE                          | ReactJS, NodeJS, Socket  |
+        +-----------------------------------------+-----------------------+`,
+
+      education: `
+        +-----------------------+-------------------------------------------+
+        | Degree                | B.Tech in Computer Science Engineering   |
+        +-----------------------+-------------------------------------------+
+        | University            | Jawaharlal Nehru Technological University |
+        |                       | Hyderabad (2018 - 2022)                  |
+        +-----------------------+-------------------------------------------+`,
+
+      volunteer: `
+        +-------------------------+-----------------------------------------------+
+        | Organization            | Younify Radio                                 |
+        +-------------------------+-----------------------------------------------+
+        | Role                    | Led cultural workshops                        |
+        +-------------------------+-----------------------------------------------+`,
+
+      contact: `
+        +----------------------+-----------------------+
+        | Email                | zubairshareef@outlook.com |
+        +----------------------+-----------------------+
+        | Phone                | ************            |
+        +----------------------+-----------------------+
+        | Location             | Hyderabad               |
+        +----------------------+-----------------------+`,
+
       help: `Available commands:
 - about: Display basic information.
 - experience: Show work experience.
@@ -218,6 +289,7 @@ GitHub: github.com/zubair1shareef`,
 - volunteer: Display volunteer experience.
 - contact: Display contact details.
 - clear: Clear the terminal.`,
+
       clear: 'clear'
     };
 
@@ -231,12 +303,12 @@ GitHub: github.com/zubair1shareef`,
         output.appendChild(commandLine);
 
         const responseLine = document.createElement('div');
+        responseLine.classList.add('table-format');
         responseLine.textContent = response;
         output.appendChild(responseLine);
       }
       terminal.scrollTop = terminal.scrollHeight;
 
-      // Add a new input line only after executing a command
       createInputLine();
     }
 
@@ -270,7 +342,7 @@ GitHub: github.com/zubair1shareef`,
 
     function toggleMinimized() {
       terminal.classList.toggle('minimized');
-      reopenIcon.style.display = 'block'; // Show the reopen icon when minimized
+      reopenIcon.style.display = 'block';
     }
 
     function toggleMaximized() {
@@ -279,7 +351,7 @@ GitHub: github.com/zubair1shareef`,
 
     function closeTerminal() {
       terminal.style.display = 'none';
-      reopenIcon.style.display = 'block'; // Show the reopen icon when closed
+      reopenIcon.style.display = 'block';
     }
 
     minimizeButton.addEventListener('click', toggleMinimized);
@@ -288,13 +360,12 @@ GitHub: github.com/zubair1shareef`,
 
     reopenIcon.addEventListener('click', () => {
       terminal.style.display = 'flex';
-      reopenIcon.style.display = 'none'; // Hide the reopen icon when terminal is visible
+      reopenIcon.style.display = 'none';
       if (terminal.classList.contains('minimized')) {
         terminal.classList.remove('minimized');
       }
     });
 
-    // Initialize the first input line
     createInputLine();
   </script>
 </body>
