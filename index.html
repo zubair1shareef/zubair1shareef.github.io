@@ -30,13 +30,14 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+      overflow-y: auto;
+      white-space: pre-wrap;
       display: flex;
       flex-direction: column;
     }
 
     .terminal-header {
       display: flex;
-      justify-content: flex-start;
       align-items: center;
       margin-bottom: 10px;
     }
@@ -60,87 +61,176 @@
       background-color: #27c93f;
     }
 
-    .terminal-content {
+    #output {
       flex: 1;
       overflow-y: auto;
-      white-space: pre-line;
-      display: flex;
-      flex-direction: column;
     }
 
-    .command {
-      display: flex;
-      align-items: center;
-      white-space: nowrap;
-    }
-
-    .command .prompt {
+    .prompt {
       color: #00d8ff;
       margin-right: 5px;
     }
 
     .user-input {
-      flex: 1;
       background: transparent;
       border: none;
       color: #00ff00;
       font-family: inherit;
       font-size: inherit;
       outline: none;
+      width: calc(100% - 1ch);
+    }
+
+    .command-line {
+      display: flex;
+      align-items: center;
     }
   </style>
 </head>
 <body>
-  <div class="terminal">
+  <div class="terminal" id="terminal">
     <div class="terminal-header">
       <div class="red"></div>
       <div class="yellow"></div>
       <div class="green"></div>
     </div>
-    <div class="terminal-content" id="output">
+    <div id="output">
       <div>Welcome to my interactive terminal! Type a command to begin.</div>
-    </div>
-    <div class="command">
-      <span class="prompt">$</span>
-      <input class="user-input" type="text" id="terminal-input" autocomplete="off" autofocus placeholder="Type a command...">
     </div>
   </div>
 
   <script>
+    const terminal = document.getElementById('terminal');
     const output = document.getElementById('output');
-    const input = document.getElementById('terminal-input');
 
     const commands = {
-      about: "Name: Zubair shareef\nRole: Full Stack Developer\nExperience: 2+ Years\nInterests: Microservices, OpenLayers, Research",
-      projects: "1. GPS Playback using OpenLayers\n2. Microservices Optimization for Journal Writing\n3. Portfolio Website",
-      experience: "Company: Big4, Hyderabad\nRole: Full Stack Developer\nDuration: 2+ Years\nSkills: React, Node.js, OpenLayers, Microservices",
-      skills: "Languages: JavaScript, Python, HTML, CSS\nFrameworks: React, Node.js\nTools: Docker, Git, OpenLayers",
-      help: "Available commands:\nabout - Display information about me\nprojects - List my projects\nexperience - Show my work experience\nskills - List my skills\nclear - Clear the terminal",
-      clear: "clear"
+      about: `Zubair Shareef
+Full Stack Developer
+Software Engineer with 2+ years of experience in Full Stack Development, specializing in MEAN and MERN Stack.
+zubairshareef@outlook.com | 9700219069 | Hyderabad
+github.com/zubair1shareef`,
+
+      experience: `WORK EXPERIENCE
+Full Stack Developer (MTS-4) - GroundhogApps Pvt Ltd (08/2022 - Present, Hyderabad)
+- Designed and developed 40+ features using Angular, NodeJS, Redis, Couchbase DB, OpenLayers, etc.
+- Integrated Redis, boosting performance.
+- Developed GPS playback with OpenLayers for real-time tracking.
+- Built shared email services for 5 projects (30% performance gain).
+- Trained and mentored 5 interns.
+
+Full Stack Developer Intern - Sharpener Tech (09/2021 - 03/2022, Bangalore - Remote)
+- Built REST APIs with NodeJS, ExpressJS, and MySQL.
+- Created dashboards and leaderboards using ReactJS.
+
+Associate Intern - AIESEC (08/2020 - 01/2021, Remote)
+- Contributed to cultural and youth development projects.
+
+Android Development Intern - Sankalpsoft Solutions (05/2020 - 07/2020, Remote)
+- Worked on frontend development with XML.
+- Developed backend for an online exam platform.`,
+
+      skills: `SKILLS
+- Frontend: Angular, ReactJS, NextJS, HTML, CSS, JavaScript
+- Backend: NodeJS, ExpressJS, Firebase, GraphQL
+- Databases: MongoDB, CouchbaseDB, Redis, SQL
+- Tools: Docker, Git, RabbitMQ, OpenLayers, AWS, Azure
+- Programming: C, C++, Java, Core Java`,
+
+      projects: `PROJECTS
+1. Social Media Web App
+- Frontend: ReactJS | Backend: NodeJS, MongoDB, RabbitMQ
+- Features: JWT login, posts, stories, likes, feed.
+
+2. Expense Tracker
+- Backend: NodeJS, SQL, AWS | Features: Modern UI, JWT login, expense tracking, premium features (dark mode, user ranking).
+
+3. Group Chat Web App
+- Frontend: HTML, CSS, JS | Backend: NodeJS, SQL
+- Features: Group creation, invites, multiple group chats.
+
+4. Shopify-like E-commerce Platform
+- Backend: NodeJS, SQL | Features: Add-to-cart, admin login.
+
+5. Notes Web App
+- Frontend: React | Backend: NodeJS, MongoDB
+- Features: Create, update, delete notes with modern UI.`,
+
+      education: `EDUCATION
+B.Tech in Computer Science Engineering
+AAR Mahaveer Engineering College (2018 - 2022, Hyderabad)`,
+
+      volunteer: `VOLUNTEER EXPERIENCE
+- Younify Radio: Led cultural and youth development workshops.
+- AIESEC: Supported international exchange programs.`,
+
+      contact: `CONTACT
+Email: zubairshareef@outlook.com
+Phone: 9700219069
+Location: Hyderabad
+GitHub: github.com/zubair1shareef`,
+
+      help: `Available commands:
+- about: Display basic information.
+- experience: Show work experience.
+- skills: List technical skills.
+- projects: Display personal projects.
+- education: Show educational background.
+- volunteer: Display volunteer experience.
+- contact: Display contact details.
+- clear: Clear the terminal.`,
+
+      clear: 'clear'
     };
 
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const userInput = input.value.trim();
-        input.value = '';
+    function executeCommand(command) {
+      const response = commands[command] || `Command not found: ${command}. Type 'help' for a list of commands.`;
+      if (command === 'clear') {
+        output.innerHTML = '';
+      } else {
+        const commandLine = document.createElement('div');
+        commandLine.innerHTML = `<span class="prompt">$</span> ${command}`;
+        output.appendChild(commandLine);
 
-        if (userInput === 'clear') {
-          output.innerHTML = '';
-          return;
-        }
-
-        const response = commands[userInput] || `Command not found: ${userInput}. Type 'help' for a list of commands.`;
-        const userCommand = `<div><span class="prompt">$</span> ${userInput}</div>`;
-        const commandResponse = `<div>${response}</div>`;
-
-        output.innerHTML += userCommand;
-        if (response !== "clear") {
-          output.innerHTML += commandResponse;
-        }
-
-        output.scrollTop = output.scrollHeight;
+        const responseLine = document.createElement('div');
+        responseLine.textContent = response;
+        output.appendChild(responseLine);
       }
-    });
+      terminal.scrollTop = terminal.scrollHeight;
+
+      // Add a new input line
+      createInputLine();
+    }
+
+    function createInputLine() {
+      const inputLine = document.createElement('div');
+      inputLine.className = 'command-line';
+
+      const prompt = document.createElement('span');
+      prompt.className = 'prompt';
+      prompt.textContent = '$';
+      inputLine.appendChild(prompt);
+
+      const inputField = document.createElement('input');
+      inputField.className = 'user-input';
+      inputField.type = 'text';
+      inputField.autocomplete = 'off';
+      inputField.placeholder = 'Type a command...';
+      inputField.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const userInput = inputField.value.trim();
+          if (userInput) executeCommand(userInput);
+          inputField.disabled = true;
+        }
+      });
+
+      inputLine.appendChild(inputField);
+      output.appendChild(inputLine);
+
+      inputField.focus();
+    }
+
+    // Initialize the first input line
+    createInputLine();
   </script>
 </body>
 </html>
