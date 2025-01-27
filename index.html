@@ -13,8 +13,8 @@
     }
 
     body {
-      background-color: #1e1e1e;
-      color: #00ff00;
+      background-color: #2c2f36;
+      color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -24,22 +24,24 @@
     }
 
     .terminal {
-      background: #000;
+      background: #111;
       width: 90%;
       max-width: 800px;
       height: 80%;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
       overflow-y: auto;
       white-space: pre-wrap;
       display: flex;
       flex-direction: column;
       transition: all 0.3s ease;
+      transform-origin: center center;
     }
 
     .terminal-header {
       display: flex;
+      justify-content: flex-start;
       align-items: center;
       margin-bottom: 10px;
       cursor: pointer;
@@ -50,6 +52,7 @@
       height: 12px;
       border-radius: 50%;
       margin-right: 8px;
+      transition: background-color 0.3s;
     }
 
     .terminal-header .red {
@@ -67,7 +70,7 @@
     #output {
       flex: 1;
       overflow-y: auto;
-      transition: height 0.3s ease;
+      color: #00ff00;
     }
 
     .prompt {
@@ -90,10 +93,12 @@
       align-items: center;
     }
 
-    /* New Styles */
+    /* UI improvements */
     .terminal.minimized {
       height: 40px;
       padding: 5px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
     }
 
     .terminal.maximized {
@@ -109,6 +114,28 @@
       cursor: pointer;
     }
 
+    /* Floating Reopen Icon in Center */
+    #reopen-icon {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      background-color: #27c93f;
+      border-radius: 50%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+      transition: all 0.3s ease;
+    }
+
+    #reopen-icon img {
+      width: 30px;
+      height: 30px;
+    }
   </style>
 </head>
 <body>
@@ -123,12 +150,19 @@
     </div>
   </div>
 
+  <!-- Floating Reopen Icon -->
+  <div id="reopen-icon">
+    <!-- Use your custom icon URL here -->
+    <img src="https://cdn-icons-png.flaticon.com/512/7560/7560719.png" alt="Reopen Icon">
+  </div>
+
   <script>
     const terminal = document.getElementById('terminal');
     const output = document.getElementById('output');
     const minimizeButton = document.getElementById('minimize');
     const maximizeButton = document.getElementById('maximize');
     const closeButton = document.getElementById('close');
+    const reopenIcon = document.getElementById('reopen-icon');
 
     const commands = {
       about: `Zubair Shareef
@@ -202,7 +236,7 @@ GitHub: github.com/zubair1shareef`,
       }
       terminal.scrollTop = terminal.scrollHeight;
 
-      // Add a new input line
+      // Add a new input line only after executing a command
       createInputLine();
     }
 
@@ -234,21 +268,34 @@ GitHub: github.com/zubair1shareef`,
       inputField.focus();
     }
 
+    function toggleMinimized() {
+      terminal.classList.toggle('minimized');
+      reopenIcon.style.display = 'block'; // Show the reopen icon when minimized
+    }
+
+    function toggleMaximized() {
+      terminal.classList.toggle('maximized');
+    }
+
+    function closeTerminal() {
+      terminal.style.display = 'none';
+      reopenIcon.style.display = 'block'; // Show the reopen icon when closed
+    }
+
+    minimizeButton.addEventListener('click', toggleMinimized);
+    maximizeButton.addEventListener('click', toggleMaximized);
+    closeButton.addEventListener('click', closeTerminal);
+
+    reopenIcon.addEventListener('click', () => {
+      terminal.style.display = 'flex';
+      reopenIcon.style.display = 'none'; // Hide the reopen icon when terminal is visible
+      if (terminal.classList.contains('minimized')) {
+        terminal.classList.remove('minimized');
+      }
+    });
+
     // Initialize the first input line
     createInputLine();
-
-    // Button functionalities
-    minimizeButton.addEventListener('click', () => {
-      terminal.classList.toggle('minimized');
-    });
-
-    maximizeButton.addEventListener('click', () => {
-      terminal.classList.toggle('maximized');
-    });
-
-    closeButton.addEventListener('click', () => {
-      terminal.style.display = 'none';
-    });
   </script>
 </body>
 </html>
